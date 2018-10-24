@@ -3,6 +3,7 @@ package ar.unq.concu.model;
 public class Worker extends Thread{
 	
 	private Buffer buffer;
+	private SeqVector seqVector;
 	
 	public Worker(Buffer buffer) {
 		this.buffer = buffer;
@@ -17,17 +18,22 @@ public class Worker extends Thread{
 	}
 	
 	public void run () {
-		
-		int i = 0;
 	
 		while ( true ) {
 			try {
-				buffer.pop();
+			
+				VectorTaks taks = buffer.pop();
+			
+				//realiza esa tarea
+				
+				//genera un resuktado
+				
+				//lo almacena
+			
 			} catch (InterruptedException e) {
 				
 				e.printStackTrace();
 			}
-			i ++;
 		}
 	
 	}

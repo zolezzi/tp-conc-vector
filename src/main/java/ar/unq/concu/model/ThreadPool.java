@@ -8,8 +8,8 @@ public class ThreadPool {
 	List<Worker> workers = new ArrayList<Worker>();
 	Buffer buffer;
 	
-	public ThreadPool() {
-		
+	public ThreadPool(Buffer buffer) {
+		this.buffer = buffer;
 	}
 	
 	public List<Worker> getWorkers() {
