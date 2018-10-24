@@ -1,47 +1,55 @@
 package ar.unq.concu.model;
 
-class Buffer {
+public class Buffer {
 	
 	private int capacity;
 	
-	private Object [] data = new Object [capacity +1];
+	private VectorTaks [] data = new VectorTaks [capacity +1];
 	
 	private int begin = 0, end = 0;
 	
-	public Buffer() {
-		
+	public Buffer(int capacity) {
+		this.capacity = capacity;
 	}
 	
-	public synchronized void push ( Object o) throws InterruptedException {
+	public synchronized void push ( VectorTaks vectorTaks) throws InterruptedException {
 		
-		while ( isFull ()) wait ();
+		while (isFull()) wait();
 		
-		data [ begin ] = o;
+		data[begin] = vectorTaks;
 		
-		begin = next ( begin );
+		begin = next(begin);
 		
-		notifyAll ();
+		notifyAll();
 	
 	}
 	
-	public synchronized Object pop () throws InterruptedException {
+	public synchronized VectorTaks pop () throws InterruptedException {
 		
 		while (isEmpty()) wait();
 		
-		Object result = data [ end ];
+		VectorTaks result = data[end];
 		
-		end = next ( end );
+		end = next(end);
 		
-		notifyAll ();
+		notifyAll();
 		
 		return result ;
 	
 	}
 	
-	private boolean isEmpty () { return begin == end ; }
+	private boolean isEmpty() { 
 	
-	private boolean isFull () { return next ( begin ) == end ; }
+		return begin == end ; 
+	}
 	
-	private int next ( int i) { return (i +1) %( capacity +1); }
+	private boolean isFull() { 
+		return next (begin) == end; 
+	}
+	
+	private int next (int i) { 
+	
+		return (i +1) %( capacity +1); 
+	}
 
 }
