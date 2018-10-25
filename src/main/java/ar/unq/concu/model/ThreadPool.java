@@ -7,9 +7,11 @@ public class ThreadPool {
 	
 	List<Worker> workers = new ArrayList<Worker>();
 	Buffer buffer;
+	VectorManagerResult vectorManagerResult;
 	
-	public ThreadPool(Buffer buffer) {
+	public ThreadPool(Buffer buffer, VectorManagerResult vectorManagerResult) {
 		this.buffer = buffer;
+		this.vectorManagerResult = vectorManagerResult;
 	}
 	
 	public List<Worker> getWorkers() {
@@ -28,18 +30,33 @@ public class ThreadPool {
 		this.buffer = buffer;
 	}
 
+	public VectorManagerResult getVectorManagerResult() {
+		return vectorManagerResult;
+	}
+
+	public void setVectorManagerResult(VectorManagerResult vectorManagerResult) {
+		this.vectorManagerResult = vectorManagerResult;
+	}
+	
+	public void workersStart() {
+		for(Worker worker : workers) {
+			System.out.println( "Start Worker");
+			worker.start();
+		}
+	}
+
 	public void createWorkers(int quantity) {
 		
-		clearWorkers();
-		
 		for (int i = 0; i < quantity; i++) {
-			this.workers.add(new Worker(buffer));
+
+			this.workers.add(new Worker(buffer, vectorManagerResult));
+		
 		}
 		
 	}
 	
 	public void clearWorkers() {
-		this.workers.clear();;
+		this.workers.clear();
 	}
 
 }
