@@ -3,25 +3,25 @@ package ar.unq.concu.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VectorTaks {
+public class VectorTasks {
 	
-	String NameOperation;	
-	List<Double> values = new ArrayList<>();
-	List<Integer> positions = new ArrayList<>();
+	private String operationName;	
+	private List<Double> values = new ArrayList<>();
+	private List<Integer> positions = new ArrayList<>();
 	
-	public VectorTaks(String nameOperation, List<Double> values, List<Integer> positions) {
+	public VectorTasks(String nameOperation, List<Double> values, List<Integer> positions) {
 		super();
-		NameOperation = nameOperation;
+		this.operationName = nameOperation;
 		this.values = values;
 		this.positions = positions;
 	}
 
-	public String getNameOperation() {
-		return NameOperation;
+	public String getOperationName() {
+		return operationName;
 	}
 	
-	public void setNameOperation(String nameOperation) {
-		NameOperation = nameOperation;
+	public void setOperationName(String operationName) {
+		this.operationName = operationName;
 	}
 
 	public List<Double> getValues() {
