@@ -1,18 +1,25 @@
 package ar.unq.concu.model;
 
+import java.util.Arrays;
+
 public class Buffer {
 	
 	private int capacity;
 	
-	private VectorTaks [] data = new VectorTaks [capacity +1];
+	private VectorTasks [] data;
 	
 	private int begin = 0, end = 0;
 	
 	public Buffer(int capacity) {
 		this.capacity = capacity;
+		this.data = new VectorTasks [capacity]; 
 	}
 	
-	public synchronized void push ( VectorTaks vectorTaks) throws InterruptedException {
+	public boolean getVectorTasksIsEmpty() {
+		return Arrays.asList(data).isEmpty();
+	}
+	
+	public synchronized void push (VectorTasks vectorTaks) throws InterruptedException {
 		
 		while (isFull()) wait();
 		
@@ -24,11 +31,11 @@ public class Buffer {
 	
 	}
 	
-	public synchronized VectorTaks pop () throws InterruptedException {
+	public synchronized VectorTasks pop () throws InterruptedException {
 		
 		while (isEmpty()) wait();
 		
-		VectorTaks result = data[end];
+		VectorTasks result = data[end];
 		
 		end = next(end);
 		
@@ -49,7 +56,7 @@ public class Buffer {
 	
 	private int next (int i) { 
 	
-		return (i +1) %( capacity +1); 
+		return (i +1) %( capacity); 
 	}
 
 }
