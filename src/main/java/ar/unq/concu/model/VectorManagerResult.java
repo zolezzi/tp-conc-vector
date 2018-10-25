@@ -6,6 +6,10 @@ import java.util.List;
 public class VectorManagerResult {
 	
 	List<VectorResult> results = new ArrayList<>();
+	
+	public VectorManagerResult() {
+		
+	}
 
 	public List<VectorResult> getResults() {
 		return results;

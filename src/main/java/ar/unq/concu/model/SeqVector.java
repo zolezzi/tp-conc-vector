@@ -14,13 +14,13 @@ public class SeqVector {
 	 * @param size, la longitud del vector.
 	 * @precondition size > 0. */
 	public SeqVector(int size) {
-		elements = new double[size];
+		setElements(new double[size]);
 	}
 	
 	
 	/** Retorna la longitud del vector; es decir, su dimension. */
 	public int dimension() {
-		return elements.length;
+		return getElements().length;
 	}
 	
 	
@@ -28,7 +28,7 @@ public class SeqVector {
 	 * @param i, la posicion del elemento a ser retornado.
 	 * @precondition 0 <= i < dimension(). */
 	public double get(int i) {
-		return elements[i];
+		return getElements()[i];
 	}
 	
 	
@@ -37,7 +37,7 @@ public class SeqVector {
 	 * @param d, el valor a ser asignado en la posicion i.
 	 * @precondition 0 <= i < dimension. */
 	public void set(int i, double d) {
-		elements[i] = d;
+		getElements()[i] = d;
 	}
 	
     
@@ -50,7 +50,7 @@ public class SeqVector {
 	 * @param d, el valor a ser asignado. */
 	public void set(double d) {
 		for (int i = 0; i < dimension(); ++i)
-			elements[i] = d;
+			getElements()[i] = d;
 	}
 	
 	
@@ -149,8 +149,14 @@ public class SeqVector {
             current_max = Math.max(current_max, get(i));
         return current_max;
 	}
-    
+
+	public double[] getElements() {
+		return elements;
+	}
 
 
+	public void setElements(double[] elements) {
+		this.elements = elements;
+	}
 	
 }
