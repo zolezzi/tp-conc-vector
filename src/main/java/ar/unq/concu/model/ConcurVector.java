@@ -3,14 +3,14 @@ package ar.unq.concu.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConcurVector extends SeqVector{
 		
 	private int totalThread;
 	private Buffer buffer;
 	private VectorManagerResult vectorManagerResult;
-	private HashMap<Integer, List<Double>> mapResult = new HashMap<>();
-	
+	private HashMap<Integer, List<Position>> mapResult = new HashMap<>();
 	
 	public ConcurVector(int dimension, int totalThread, Buffer buffer, VectorManagerResult vectorManagerResult) {
 		super(dimension);
@@ -111,21 +111,25 @@ public class ConcurVector extends SeqVector{
     /** Obtiene el valor maximo en el vector. */
 	public double max() {
 		
+		System.out.println( "EXECUTE METHOD MAX" );
+		
 		while (vectorManagerResult.getResults().isEmpty() || vectorManagerResult.getResults().size() > 1) {
 			
-			List<VectorTaks> taks = new ArrayList<>();
+			System.out.println( "GENERATE TASKS" );
+			List<VectorTasks> taks = new ArrayList<>();
 			
+			initMap();
 			//Fijarme como particionar el vector apatrir de dimension y la cantidad de thread
 			//Refactorizar en un method si funciona.
 			if(vectorManagerResult.getResults().isEmpty()) {
-				taks = generateTaks(dimension(), getTotalThread());
+				taks = generateTasks(dimension(), getTotalThread(), "max");
 			}
 			else {
-				taks = generateTaks(vectorManagerResult.getResults().size(), getTotalThread());
+				taks = generateTasks(vectorManagerResult.getResults().size()-1, getTotalThread(), "max");
 			}		
 			
 			//Genero la n tareas que necesito
-			for(VectorTaks vectorTaks : taks) {
+			for(VectorTasks vectorTaks : taks) {
 				try {
 					getBuffer().push(vectorTaks);
 				} catch (InterruptedException e) {
@@ -135,22 +139,63 @@ public class ConcurVector extends SeqVector{
 			
 		}	
 		
+		System.out.println("Result:");
+		
 		//chequeo que el managerResult no este vacio
 		return getVectorManagerResult().getResults().stream().findFirst().get().getValue();
 
 	}
 
 
-	private List<VectorTaks> generateTaks(int dimension, int totalThread2) {
+	private List<VectorTasks> generateTasks(int dimension, int totalThread, String nameOperation) {
 		
-		double  = dimension() / getTotalThread();
-		double 
+		List<VectorTasks> taks = new ArrayList<>();
 		
-		if() {}
+		mapResult = splitVectorForThreads(mapResult, dimension-1, totalThread);
 		
-		return null;
+		mapResult.forEach((key,values)->{
+			
+			List<Integer> positions = values.stream().map(position -> position.getPosition()).collect(Collectors.toList());
+			List<Double> valuesForVector = values.stream().map(position -> position.getValue()).collect(Collectors.toList());
+			VectorTasks vectorTaks = new VectorTasks(nameOperation, valuesForVector, positions);
+			taks.add(vectorTaks);
+		});
+		
+		return taks;
 	}
-
+	
+	
+	
+	HashMap<Integer, List<Position>> splitVectorForThreads (HashMap<Integer, List<Position>> mapResult, int dimension, int totalThread){
+		
+		if(dimension < totalThread) {
+			
+			for (int i = 0; i < dimension; i++) {
+				List<Position> positions =  mapResult.get(i);
+				positions.add(new Position(getElements()[i], i));
+				mapResult.put(i, positions);
+			}
+		}else {
+			
+			for (int i = 0; i < totalThread; i++) {
+				List<Position> positions =  mapResult.get(i);
+				positions.add(new Position(getElements()[dimension], dimension));
+				mapResult.put(i, positions);
+				dimension = dimension - 1;
+			}
+			
+			splitVectorForThreads(mapResult, dimension, totalThread);
+			
+		}
+		
+		return mapResult;
+	}
+	
+	private void initMap () {
+		for (int i = 0; i < totalThread; i++) {
+			mapResult.put(i, new ArrayList<>());
+		}
+	}
 
 	public int getTotalThread() {
 		return totalThread;
@@ -181,5 +226,14 @@ public class ConcurVector extends SeqVector{
 		this.vectorManagerResult = vectorManagerResult;
 	}
 
+
+	public HashMap<Integer, List<Position>> getMapResult() {
+		return mapResult;
+	}
+
+
+	public void setMapResult(HashMap<Integer, List<Position>> mapResult) {
+		this.mapResult = mapResult;
+	}
 	
 }
