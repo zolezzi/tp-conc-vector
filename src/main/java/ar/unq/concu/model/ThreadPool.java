@@ -49,7 +49,7 @@ public class ThreadPool {
 		
 		for (int i = 0; i < quantity; i++) {
 
-			this.workers.add(new Worker(buffer, vectorManagerResult));
+			this.workers.add(new Worker(i , buffer, vectorManagerResult));
 		
 		}
 		

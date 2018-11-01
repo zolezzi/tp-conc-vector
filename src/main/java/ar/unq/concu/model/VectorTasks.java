@@ -8,6 +8,15 @@ public class VectorTasks {
 	private String operationName;	
 	private List<Double> values = new ArrayList<>();
 	private List<Integer> positions = new ArrayList<>();
+	private SeqVector seqVector;
+	
+	public VectorTasks(String nameOperation, List<Double> values, List<Integer> positions, SeqVector seqVector) {
+		super();
+		this.operationName = nameOperation;
+		this.values = values;
+		this.positions = positions;
+		this.seqVector = seqVector;
+	}
 	
 	public VectorTasks(String nameOperation, List<Double> values, List<Integer> positions) {
 		super();
@@ -38,6 +47,14 @@ public class VectorTasks {
 
 	public void setValues(List<Double> values) {
 		this.values = values;
+	}
+
+	public SeqVector getSeqVector() {
+		return seqVector;
+	}
+
+	public void setSeqVector(SeqVector seqVector) {
+		this.seqVector = seqVector;
 	}
 	
 }

@@ -11,7 +11,7 @@ public class VectorManagerResult {
 		
 	}
 
-	public List<VectorResult> getResults() {
+	public synchronized List<VectorResult> getResults() {
 		return results;
 	}
 
