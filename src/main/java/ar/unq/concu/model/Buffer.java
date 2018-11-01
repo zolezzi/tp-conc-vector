@@ -6,7 +6,7 @@ public class Buffer {
 	
 	private int capacity;
 	
-	private VectorTasks [] data;
+	public VectorTasks [] data;
 	
 	private int begin = 0, end = 0;
 	
@@ -16,7 +16,14 @@ public class Buffer {
 	}
 	
 	public boolean getVectorTasksIsEmpty() {
-		return Arrays.asList(data).isEmpty();
+		
+		boolean isEmpty = true;
+		
+		for(VectorTasks vectorTasks : Arrays.asList(data)) {
+			isEmpty = isEmpty && vectorTasks == null;
+		}
+		
+		return isEmpty;
 	}
 	
 	public synchronized void push (VectorTasks vectorTaks) throws InterruptedException {
@@ -37,6 +44,8 @@ public class Buffer {
 		
 		VectorTasks result = data[end];
 		
+		data[end] = null;
+	
 		end = next(end);
 		
 		notifyAll();
