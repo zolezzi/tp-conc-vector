@@ -36,7 +36,7 @@ public class SeqVector {
 	 * @param i, la posicion a setear.
 	 * @param d, el valor a ser asignado en la posicion i.
 	 * @precondition 0 <= i < dimension. */
-	public void set(int i, double d) {
+	public void setWithPosition(int i, double d) {
 		getElements()[i] = d;
 	}
 	
@@ -59,7 +59,7 @@ public class SeqVector {
 	 * @precondition dimension() == v.dimension(). */
 	public void assign(SeqVector v) {
 		for (int i = 0; i < dimension(); ++i)
-			set(i, v.get(i));
+			setWithPosition(i, v.get(i));
 	}
 	
 	
@@ -71,7 +71,7 @@ public class SeqVector {
 	public void assign(SeqVector mask, SeqVector v) {
 		for (int i = 0; i < dimension(); ++i)
 			if (mask.get(i) >= 0)
-				set(i, v.get(i));
+				setWithPosition(i, v.get(i));
 	}
 	
 	
@@ -80,7 +80,7 @@ public class SeqVector {
 	 * @precondition dimension() == v.dimension(). */
 	public void add(SeqVector v) {
 		for (int i = 0; i < dimension(); ++i)
-			set(i, get(i) + v.get(i));
+			setWithPosition(i, get(i) + v.get(i));
 	}
 	
 	
@@ -90,14 +90,14 @@ public class SeqVector {
 	 * @precondition dimension() == v.dimension(). */
 	public void mul(SeqVector v) {
 		for (int i = 0; i < dimension(); ++i)
-			set(i, get(i) * v.get(i));
+			setWithPosition(i, get(i) * v.get(i));
 	}
 	
 	
 	/** Obtiene el valor absoluto de cada elemento del vector. */
 	public void abs() {
 		for (int i = 0; i < dimension(); ++i)
-			set(i, Math.abs(get(i)));
+			setWithPosition(i, Math.abs(get(i)));
 	}
 
 
